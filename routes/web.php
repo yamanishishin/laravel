@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\controllers\DisplayController;
+use App\Http\Controllers\DisplayController;
+use App\Http\Controllers\RegistrationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,3 +15,4 @@ use App\Http\controllers\DisplayController;
 */
 
 Route::get('/', [DisplayController::class,'index']);
+Route::get('/post/{id}/detail', [DisplayController::class, 'postdetail'])->name('post.detail');
