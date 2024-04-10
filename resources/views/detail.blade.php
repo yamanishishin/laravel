@@ -1,72 +1,79 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-
-        <title>Overseas</title>
-
-        <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
-        <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
-    </head>
-    <body>
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="{{ url('/') }}">Overseas</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto py-4 py-lg-0">
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">マイページ</a></li>
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about.html">ログアウト</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <!-- Page Header-->
-        <header class="masthead" style="background-image: url('assets/img/about-bg.jpg')">
-            <div class="container position-relative px-4 px-lg-5">
-                <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col-md-10 col-lg-8 col-xl-7">
-                        <div class="page-heading">
-                            <h1>The more you do, the more you learn</h1>
+@extends('layouts.header')
+@section('header')
+        <div class="border" >
+            <br><h1 style='text-align:center '>Overseas </h1><br>
+        </div>
+        <main class="py-4 "> 
+        <div class="row justify-content-center mt-4">
+                <div class="col-md">
+                    <div class="card">
+                        <div class="card-header ">
+                            <div class='text-center'>詳細</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-body">
+                                <table class='table'>
+                                    <thead>
+                                        <tr>
+                                            <th scope='col' style="background-color:ghostwhite">ユーザーアイコン</th>
+                                            <th scope='col' style="background-color:ghostwhite">ユーザー名</th>
+                                            <th scope='col' style="background-color:ghostwhite">タイトル</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope='col'>{{ $post->user->image }}</th>
+                                            <th scope='col'>{{ $post->user->name }}</th>
+                                            <th scope='col'>{{ $post->title }}</th>
+                                        </tr>  
+                                    </tbody>
+                                </table>
+                                <div class="card-body">
+                                    <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope='col' style="background-color:ghostwhite">エピソード</th>
+                                            <th scope='col' style="background-color:ghostwhite">カントリー</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope='col'>{{ $post->episode }}</th>
+                                            <th scope='col'>{{ $post->region }}</th>
+                                        </tr>  
+                                    </tbody>
+                                    </table>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <th scope='col'>
+                                                <img src="{{ asset('img/'.$post->image.'.png')}}" class="h-10 img-fluid">
+                                            </th>
+                                            <th scope='col'>
+                                            <form action="{{ route('post.comment') }}" method="POST" name="comment"  >
+                                                @csrf    
+		                                        <h3 class="form-signin-heading">コメント投稿</h3>
+                                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" />
+                                                <input type="hidden" name="post_id" value="{{ $post->id }}" /> 
+                                                <input type="text" class="form-control" id= "comment" name="comment" placeholder="本文" required="" autofocus=""/> <br>
+			                                    <button type="submit" class="btn btn-lg btn-primary btn-block"  name="submit"  >送信</button> <br><br>
+		                                    </form>	
+                                            </th>
+                                        </tr>  
+                                    </tbody>
+                                    </table>
+                                </div>
+                                
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </header>
-
-        <style>
-            .border {background-color: #e0ffff;}
-            .footer {  width:200px; margin: 0 auto;}
-        </style>
-
-        <div class="border" >
-        
-            <br><h1 style='text-align:center '>Overseas 
-            <div class ='float-end'>
-            <button type="button"  class="btn btn-dark rounded-pill " >新規投稿</button>
-            </div> 
-            </h1><br>
-        </div>
-
    
 
-        
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
+        </main>    
     </body>
 </html>
+@endsection

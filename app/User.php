@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','del_flg','role'
     ];
 
     /**
@@ -38,15 +38,15 @@ class User extends Authenticatable
     ];
 
     public function post(){
-        return $this->belongsToMany('App\post','user_id','id');
+        return $this->hasMany('App\post');
     }
     public function comment(){
-        return $this->belongsToMany('App\Comment','post_id','user_id','id');
+        return $this->hasMany('App\Comment');
     }
     public function bookmark(){
-        return $this->belongsToMany('App\bookmark','post_id','user_id','id');
+        return $this->hasMany('App\bookmark');
     }
     public function violation(){
-        return $this->belongsToMany('App\violation','post_id','user_id','id');
+        return $this->hasMany('App\violation');
     }
 }
