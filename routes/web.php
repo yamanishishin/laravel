@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DisplayController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\ResourceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,21 +25,25 @@ Route::get('main',[DisplayController::class, 'mainForm'])->name('main');
 Route::group(['middleware' => 'auth'], function() {
    
     Route::get('/', [DisplayController::class,'index']);
+    Route::resource('/', 'ResourceController');
     
 
 
 Route::get('/post/{post}/detail', [DisplayController::class, 'postDetail'])->name('post.detail');
 
 Route::get('/my_user',[DisplayController::class, 'myUser'])->name('my.user');
+Route::get('/my_bookmark',[DisplayController::class, 'myBookmark'])->name('my.bookmark');
 
 Route::get('/new_post',[RegistrationController::class, 'newPostForm'])->name('new.post');
 Route::post('/new_post',[RegistrationController::class, 'newPost']);
 
 
-Route::get('/post_comment',[RegistrationController::class, 'postCommnetForm'])->name('post.comment');
-Route::post('/post_comment',[RegistrationController::class, 'postComment']);
-Route::get('/post/{post}/violation',[DisplayController::class, 'postViolationForm'])->name('post.violation');
-Route::post('/post/{post}/violation',[DisplayController::class, 'postViolation']);
+Route::get('/post/{post}/comment',[RegistrationController::class, 'postCommnetForm'])->name('post.bookmark');
+Route::post('/post/{post}/comment',[RegistrationController::class, 'postComment']);
+Route::get('/post/{post}/bookmark',[RegistrationController::class, 'postBookmarkForm'])->name('post.comment');
+Route::post('/post/{post}/bookmark',[RegistrationController::class, 'postBookmark']);
+Route::get('/post/{post}/violation',[RegistrationController::class, 'postViolationForm'])->name('post.violation');
+Route::post('/post/{post}/violation',[RegistrationController::class, 'postViolation']);
 Route::get('/post_edit/{post}',[RegistrationController::class, 'postEditForm'])->name('post.edit');
 Route::post('post_edit/{post}',[RegistrationController::class, 'postEdit']);
 Route::get('post/{post}/delete',[RegistrationController::class, 'postDeleteForm'])->name('post.delete');

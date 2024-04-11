@@ -11,7 +11,7 @@ class Post extends Model
     protected $fillable = ['user_id','title', 'region', 'episode', 'image'];
 
     public function user(){
-        return $this->belongsTo('App\Post','user_id','id');
+        return $this->belongsTo('App\Post');
     } 
 
     public function comment(){

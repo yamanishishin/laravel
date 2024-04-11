@@ -15,7 +15,6 @@
 			        <input type="password" class="form-control" id="password" name="password" placeholder="パスワード" required=""/>  
                     <input type="password" class="form-control" id="password-confirm" name="password_confirmation" placeholder="パスワード （確認）" required=""/>   	  
 			        <button type="submit" class="btn btn-lg btn-primary btn-block"  name="submit"  >新規登録</button> <br><br>
-                    
 		        </form>	
 	        </div>
         </div>

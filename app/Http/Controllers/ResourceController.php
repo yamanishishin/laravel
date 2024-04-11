@@ -2,7 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
+use App\Bookmark;
+use App\Comment;
+use App\User;
+use App\Violation;
+
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Auth;
 
 class ResourceController extends Controller
 {
@@ -13,7 +21,12 @@ class ResourceController extends Controller
      */
     public function index()
     {
-        //
+        $post = new Post;
+        $posts = $post->all()->where('del_flg','0')->toArray();
+
+        return view('main',[
+            'posts' => $posts,
+        ]);
     }
 
     /**
@@ -23,7 +36,7 @@ class ResourceController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -34,7 +47,28 @@ class ResourceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $post = new Post;
+
+        $post->user_id = $request->user_id;
+        $post->title = $request->title;
+        $post->region = $request->region;
+        $post->episode = $request->episode;
+
+        //画像を空にした時の条件分岐いれる  
+
+        // ディレクトリ名
+        $dir = 'img';
+
+        // アップロードされたファイル名を取得
+        $file_name = $request->file('image')->getClientOriginalName();
+
+         // 取得したファイル名で保存
+        $request->file('image')->storeAs('public/' . $dir, $file_name);
+
+        $post->image = $file_name;
+        Auth::user()->post()->save($post);
+        return redirect('/');
+        
     }
 
     /**

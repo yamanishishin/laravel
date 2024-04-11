@@ -69,12 +69,34 @@
                                 </div> 
                                 </th>
                                 </tr>        
-                                
                                 @endforeach    
                             </tbody>
                         </table>
+                        <table class='table'>
+                            
+                            <tbody>
+                                <tr>
+                                    <th scope='col'>
+                                        <a href="{{ route('new.post') }}">
+                                            <button type="button"  class="btn btn-success rounded-pill " >新規投稿</button>
+                                        </a>
+                                    </th>
+                                    <th scope='col'>
+                                        <a href="{{ route('my.bookmark') }}">
+                                            <button type="button"  class="btn btn-info rounded-pill " >いいねした投稿</button>
+                                        </a>
+                                    </th>
+                                    <th scope='col'>
+                                        <a href="{{ route('new.post') }}">
+                                            <button type="button"  class="btn btn-danger rounded-pill " >退会</button>
+                                        </a>
+                                    </th>
+                                </tr>  
+                            </tbody>
+                            
+                        </table>
                     </div>
-                </div>
+                </div> 
             </div>
         </div>
 </main>

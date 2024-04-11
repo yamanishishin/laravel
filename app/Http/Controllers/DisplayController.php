@@ -35,21 +35,27 @@ class DisplayController extends Controller
 
     public function postDetail(Post $post){
 
-        
+        $id = $post->id;
+        $user_id = $post->user_id;
+        $image = $post->image;
 
+        $comment = new Comment;
+        $comments = $comment->all()->where('post_id', $id)->toArray();
+
+        $user = new User;
+        $users = $user->all()->where('id',$user_id)->toArray();
         //dd($post);
+
         return view('detail',[
             'post' => $post,
+            'comments' => $comments,
+            'user' => $users[0],
+            'image' => $image,
         ]);
         
     }
 
-    public function postViolationForm(Post $post){
-
-        return view('violation',[
-            'post' => $post,
-        ]);
-    }
+    
 
     public function myUser(User $user){
 
@@ -57,6 +63,22 @@ class DisplayController extends Controller
         $posts = Auth::user()->post()->where('del_flg','0')->get();
         return view('my_user',[
             'user' => $user,
+            'posts' => $posts
+        ]);
+    }
+
+    public function myBookmark(){
+
+        $post = new Post;
+        $user_id = Auth::user()->id ;
+        
+        //$posts = $post->with('bookmark')->whereHas('user_id',$user_id)->get();
+        $posts = $post->with('bookmark')->whereHas('bookmark',function ($q) use($user_id){
+            $q->where('user_id',$user_id);
+        })->get();
+        //dd($posts);
+        return view('my_bookmark',[
+            
             'posts' => $posts
         ]);
     }
