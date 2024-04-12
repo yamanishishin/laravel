@@ -20,13 +20,13 @@
                         <div class="container-fluid">
                             <div class="container">
                                 <div class="card mt-4">
-                                    <input type="text" name="kensaku"  class="col-sm" placeholder="タイトルorエピソードorカントリー" value="">
+                                    <input type="text" name="kensaku"  class="col-sm" placeholder="タイトルorエピソードorカントリー" value="@if (isset($kensaku)) {{ $kensaku }} @endif">
                                     
                                 </div>
                                 <div class="pt-4 ">
-                                    <input type="date" name="from"  class="mt-1" placeholder="from_date" value="">
+                                    <input type="date" name="from"  class="mt-1" placeholder="from_date" value="@if (isset($from)) {{ $from }} @endif" >
                                     <span class="mt-2">～</span>
-                                    <input type="date" name="until"  class="mt-1" placeholder="until_date" value="">
+                                    <input type="date" name="until"  class="mt-1" placeholder="until_date" value="@if (isset($until)) {{ $until }} @endif" >
                                     <div class ='float-end'>
                                     <button type='submit' class='btn btn-primary mt-2 rounded-pill '>検索</button>
                                 </div>

@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'driver' => env('MAIL_DRIVER', 'smtp'),
+    'driver' => env('MAIL_MAILER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => ('pyosibo@mama3.org'),
+        'address' => ('s926yamanishi@gmail.com'),
         'name' => ('yamanishi'),
     ],
 

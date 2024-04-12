@@ -8,6 +8,8 @@ use App\Comment;
 use App\User;
 use App\Violation;
 
+use InterventionImage;
+
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -25,8 +27,10 @@ class RegistrationController extends Controller
         return view('newpost');
     }
 
-    public function userEditForm() {
-        return view('user_edit');
+    public function userEditForm(User $user) {
+        return view('user_edit',[
+            'user' => $user,
+        ]);
     }
 
     public function postEditForm(Post $post) {
@@ -52,26 +56,12 @@ class RegistrationController extends Controller
     }
 
    public function userDeleteForm(User $user){
-        $user->delete();  // 物理削除
-        return redirect('/');
-    }
+        return view('user_delete',[
+            'user' => $user,
+        ]);
+   }
 
    
-
-    public function newPost(Request $request) {
-         
-        $post = new Post;
-
-        $post->user_id = $request->user_id;
-        $post->title = $request->title;
-        $post->region = $request->region;
-        $post->episode = $request->episode;
-        //$post->image = $request->image;
-        
-
-        Auth::user()->post()->save($post);
-        return redirect('/');
-    }
 
     public function postComment(Post $post,Request $request){
 
@@ -119,17 +109,73 @@ class RegistrationController extends Controller
 
     public function postEdit(Post $post, Request $request) {
 
+        $post = Post::find($post->id);
+
         $post->user_id = $request->user_id;
         $post->title = $request->title;
         $post->region = $request->region;
         $post->episode = $request->episode;
         //$post->image = $request->image;
-        
 
-        Auth::user()->post()->save($post);
+        // 画像がアップロードされた場合、新しい画像を保存して既存の画像を上書きする
+        if ($request->hasFile('image')) {
+
+        $dir = 'img';
+    
+        $file_name = $request->file('image')->getClientOriginalName();
+    
+        $request->file('image')->storeAs('public/' . $dir, $file_name);
+    
+        $post->image = $file_name;
+    
+    }
+    
+        $post->save(); 
         return redirect('/');
     }
 
+    public function userEdit(Request $request) {
+
+        $user = Auth::user();
+
+        $user->name = $request->name;
+        $user->comment = $request->comment;
+        $user->email = $request->email;
+        //$user->image = $request->image;
+
+        // 画像がアップロードされた場合、新しい画像を保存して既存の画像を上書きする
+        if ($request->hasFile('image')) {
+
+            $dir = 'img';
+        
+            $file_name = $request->file('image')->getClientOriginalName();
+        
+            $request->file('image')->storeAs('public/' . $dir, $file_name);
+
+            //InterventionImage::$request->file('image')->resize(80, 80);
+        
+            $user->image = $file_name;
+        }
+        else{
+            $dir = 'img';
+
+            $file_name = $request->file('image')->getClientOriginalName();
     
+            $request->file('image')->storeAs('public/' . $dir, $file_name);
+
+            //InterventionImage::$request->file('image')->resize(80, 80);
+    
+            $user->image = $file_name;
+        }
+        
+        $user->save();
+        return redirect('/');
+    }
+
+    public function userDelete(){
+
+        $user->delete();  // 物理削除
+        return redirect('login');
+    }
 
 }

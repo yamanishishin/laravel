@@ -74,7 +74,7 @@
                         <button type='button' class='btn  btn-primary'>新規登録</button>
                     </a>
                     
-                    <a href="{{ route('login') }}">
+                    <a href="{{ route('password.request') }}">
                         <button type='button' class='btn btn-success'>パスワード忘れた方</button>
                     </a>	
 		        </form>	

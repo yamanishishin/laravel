@@ -22,7 +22,10 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope='col'>{{ $user['image'] }}</th>
+                                            <th scope='col'>
+                                                <a href="{{ route('other.user', ['user' => $user['id']]) }}">
+                                                    <img src="{{asset('storage/img/'.$user['image'])}}" class="h-1 img-fluid"></th>
+                                                </a>
                                             <th scope='col'>{{ $user['name'] }}</th>
                                             <th scope='col'>{{ $post['title'] }}</th>
                                         </tr>  

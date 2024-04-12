@@ -6,16 +6,13 @@
 
         <div class = "container">
 	        <div class="wrapper">
-		           <h3 class="form-signin-heading">本当に退会してもよろしいですか？ </h3>
-			    <hr class="colorgraph"><br>
-                    <div class ='float-end'>
-                        <a href="{{ route('user.delete', ['user' => $user['id']]) }}">
-                            <button type="button"  class="btn btn-dark rounded-pill " >退会</button>
-                        </a>
-            </div>
-                    
-		       
-	        </div>
+		        <br><br><h2 style='text-align:center'>本当に退会してもよろしいですか？</h2>
+                <div class ='float-end'>
+                    <a href="{{ route('user.delete') }}">
+                        <button type="button"  class="btn btn-danger rounded-pill " >退会</button>
+                    </a>
+                </div>    
+	        </div><br><br>
         </div>
 
     </body>

@@ -8,7 +8,7 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('post.edit',$post->id)}}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('post.edit', ['post' => $post['id']]) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" />
                             <label for='title'>タイトル</label>

@@ -67,6 +67,16 @@ class DisplayController extends Controller
         ]);
     }
 
+    public function otherUser(User $user){
+
+        $post = new Post;
+        $posts = $user->post()->where('del_flg','0')->get();
+        return view('other_user',[
+            'user' => $user,
+            'posts' => $posts
+        ]);
+    }
+
     public function myBookmark(){
 
         $post = new Post;

@@ -21,7 +21,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th scope='col'>{{ Auth::user()->image }}</th>
+                                    <th scope='col'><img src="{{asset('storage/img/'.Auth::user()->image)}}" class="h-1 img-fluid"></th>
                                     <th scope='col'>{{ Auth::user()->name }}</th>
                                     <th scope='col'>{{ Auth::user()->comment }}</th>
                                 </tr>  
@@ -87,7 +87,7 @@
                                         </a>
                                     </th>
                                     <th scope='col'>
-                                        <a href="{{ route('new.post') }}">
+                                        <a href="{{ route('user.delete') }}">
                                             <button type="button"  class="btn btn-danger rounded-pill " >退会</button>
                                         </a>
                                     </th>

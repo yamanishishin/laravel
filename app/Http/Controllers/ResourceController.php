@@ -8,6 +8,8 @@ use App\Comment;
 use App\User;
 use App\Violation;
 
+use \InterventionImage;
+
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -19,14 +21,50 @@ class ResourceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $post = new Post;
-        $posts = $post->all()->where('del_flg','0')->toArray();
+        
+        $kensaku = $request->input('kensaku');
+        $from = $request->input('from');
+        $until = $request->input('until');
 
-        return view('main',[
-            'posts' => $posts,
-        ]);
+        // 日付検索
+        if (isset($from) && isset($until)) {
+            $posts = $post->all()->where('del_flg','0')->whereBetween('created_at', [$from, $until])->toArray();
+
+            
+            return view('main',[
+                'posts' => $posts,
+                'from' => $from,
+                'until' => $until,
+                'kensaku' => $kensaku,
+            ]);
+        //キーワード部分検索
+        }elseif (isset($kensaku)) {
+            $posts = $post->all()->where('del_flg','0')->where('title', 'LIKE', "%{$kensaku}%")
+                                                        ->orWhere('region','LIKE',"%{$kensaku}%")
+                                                        ->orWhere('episode','LIKE',"%{$kensaku}%")
+                                                        ->toArray();
+            
+
+            dd($posts);
+            return view('main',[
+                'posts' => $posts,
+                'from' => $from,
+                'until' => $until,
+                'kensaku' => $kensaku,
+            ]);
+        }
+        else{
+            $posts = $post->all()->where('del_flg','0')->toArray();
+
+            return view('main',[
+                'posts' => $posts,
+            ]);
+        }
+
+        
     }
 
     /**
@@ -103,7 +141,7 @@ class ResourceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     /**
