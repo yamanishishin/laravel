@@ -8,20 +8,16 @@ use App\Comment;
 use App\User;
 use App\Violation;
 
-use InterventionImage;
-
 use Illuminate\Http\Request;
+use Illuminate\Http\CreateDate;
+use Illuminate\Http\CreatePost;
+use Illuminate\Http\CreateComment;
+use Illuminate\Http\CreateViolation;
 
 use Illuminate\Support\Facades\Auth;
 
 class RegistrationController extends Controller
 {
-
-
-    public function pwresetForm() {
-        return view('pw_reset');
-    }
-
 
     public function newPostForm() {
         return view('newpost');
@@ -34,19 +30,43 @@ class RegistrationController extends Controller
     }
 
     public function postEditForm(Post $post) {
-
         return view('post_edit',[
             'post' => $post,
         ]);
     }
 
     public function postViolationForm(Post $post) {
-        //dd($post);
-
         return view('violation',[
             'post' => $post,
         ]);
     }
+
+  
+
+    public function userListForm() {
+        $user = new User;
+
+        $users = User::withCount('post')->orderBy('post_count', 'desc')->take(10)->where('role',0)->get();
+        //dd($users);
+        return view('user_list',[
+            'users' => $users,
+        ]);
+    }
+
+    public function postHiddenForm(post $post){
+        $user = new User;
+        $user_id = $post->user_id;
+        $image = $post->image;
+        
+        $users = $user->all()->where('id',$user_id)->toArray();
+        return view('hidden',[
+            'user' => $users[0],
+            'post' => $post,
+            'image' => $image,
+        ]);
+    }
+
+   
 
 
 
@@ -63,7 +83,7 @@ class RegistrationController extends Controller
 
    
 
-    public function postComment(Post $post,Request $request){
+    public function postComment(Post $post,CreatePost $request){
 
         $comment = new Comment;
 
@@ -77,7 +97,7 @@ class RegistrationController extends Controller
 
     }
 
-    public function postBookmark(Post $post,Request $request){
+    public function postBookmark(Post $post,CreateBookmark $request){
 
         $bookmark = new Bookmark;
 
@@ -93,7 +113,7 @@ class RegistrationController extends Controller
 
 
 
-    public function postViolation(Post $post,Request $request) {
+    public function postViolation(Post $post,CreateViolation $request) {
          
         $violation = new Violation;
 
@@ -107,7 +127,7 @@ class RegistrationController extends Controller
         return redirect('/');
     }
 
-    public function postEdit(Post $post, Request $request) {
+    public function postEdit(Post $post,CreatePost $request) {
 
         $post = Post::find($post->id);
 
@@ -134,7 +154,7 @@ class RegistrationController extends Controller
         return redirect('/');
     }
 
-    public function userEdit(Request $request) {
+    public function userEdit(CreateDate $request) {
 
         $user = Auth::user();
 
@@ -173,9 +193,28 @@ class RegistrationController extends Controller
     }
 
     public function userDelete(){
-
         $user->delete();  // 物理削除
         return redirect('login');
+    }
+
+    public function userList(Request $request){
+        $user =new user;
+
+        
+        $user->del_flg = 1;
+
+        //dd($user);
+
+        $user->save();
+        return redirect('/');
+    }
+
+    public function postHidden(Post $post){
+
+        $post->del_flg = 1;
+
+        $post->save();
+        return redirect('/');
     }
 
 }

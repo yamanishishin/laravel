@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/', [DisplayController::class,'index']);
     Route::resource('/', 'ResourceController');
     
+    
 
 
 Route::get('/post/{post}/detail', [DisplayController::class, 'postDetail'])->name('post.detail');
@@ -57,4 +58,12 @@ Route::get('/user_edit',[RegistrationController::class, 'userEditForm'])->name('
 Route::post('/user_edit',[RegistrationController::class, 'userEdit']);
 Route::get('/user_delete',[RegistrationController::class, 'userDeleteForm'])->name('user.delete');
 Route::post('/user_delete',[RegistrationController::class, 'userDelete']);
+
+Route::get('/user_list',[RegistrationController::class, 'userListForm'])->name('user.list');
+Route::post('/user_list',[RegistrationController::class, 'userList']);
+Route::get('/post/{post}/hidden',[RegistrationController::class, 'postHiddenForm'])->name('post.hidden');
+Route::post('post/{post}/hidden',[RegistrationController::class, 'postHidden']);
 });
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

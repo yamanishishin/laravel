@@ -8,9 +8,8 @@ use App\Comment;
 use App\User;
 use App\Violation;
 
-use \InterventionImage;
-
 use Illuminate\Http\Request;
+use Illuminate\Http\CreatePost;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -24,46 +23,62 @@ class ResourceController extends Controller
     public function index(Request $request)
     {
         $post = new Post;
-        
         $kensaku = $request->input('kensaku');
         $from = $request->input('from');
         $until = $request->input('until');
-
+        
+      
         // 日付検索
         if (isset($from) && isset($until)) {
-            $posts = $post->all()->where('del_flg','0')->whereBetween('created_at', [$from, $until])->toArray();
-
+            $posts = $post->whereBetween('updated_at', [$from, $until])->latest()->get();
             
-            return view('main',[
-                'posts' => $posts,
-                'from' => $from,
-                'until' => $until,
-                'kensaku' => $kensaku,
-            ]);
+        }
+        //$from のみ 以降の日付
+        if (isset($from)){
+            $posts = $post->whereDate('updated_at','>',$from)->latest()->get();
+            //dd($posts);
+        }
+        //$untilのみ　以前の日付
+        if(isset($until)){
+            $posts = $post->whereDate('updated_at','<',$until)->latest()->get();
+            
+        }
         //キーワード部分検索
-        }elseif (isset($kensaku)) {
-            $posts = $post->all()->where('del_flg','0')->where('title', 'LIKE', "%{$kensaku}%")
-                                                        ->orWhere('region','LIKE',"%{$kensaku}%")
-                                                        ->orWhere('episode','LIKE',"%{$kensaku}%")
-                                                        ->toArray();
+        if (isset($kensaku)) {
+            $posts = $post->where('title', 'LIKE', "%{$kensaku}%")
+                    ->orWhere('region','LIKE',"%{$kensaku}%")
+                    ->orWhere('episode','LIKE',"%{$kensaku}%")->latest()->get();
             
+        }
+        elseif(empty($from) && empty($until) && empty($kensaku)){
+            $posts = $post->where('del_flg','0')->latest()->get();
+        }
+        
+        if( Auth::user()->role = 1){
+            //dd(Auth::user());
 
-            dd($posts);
-            return view('main',[
+            $posts = $post->where('del_flg','0');
+
+            $posts = Post::withCount('violation')->orderBy('violation_count', 'desc')->take(20)->where('del_flg','0')->get();
+            //dd($posts);
+            return view('master',[
                 'posts' => $posts,
-                'from' => $from,
-                'until' => $until,
-                'kensaku' => $kensaku,
             ]);
         }
-        else{
-            $posts = $post->all()->where('del_flg','0')->toArray();
 
-            return view('main',[
-                'posts' => $posts,
-            ]);
+        elseif( Auth::user()->del_flg = 1){
+            return view ('stop');
         }
-
+        
+        
+        
+        //dd($posts);
+        return view('main',[
+            'posts' => $posts,
+            'from' => $from,
+            'until' => $until,
+            'kensaku' => $kensaku,
+        ]);
         
     }
 
@@ -83,7 +98,7 @@ class ResourceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreatePost $request)
     {
         $post = new Post;
 

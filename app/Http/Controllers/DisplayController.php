@@ -25,6 +25,8 @@ class DisplayController extends Controller
     }
 
     public function mainForm(){
+
+        
         $post = new Post;
         $posts = $post->all()->where('del_flg','0')->toArray();
 
