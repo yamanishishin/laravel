@@ -88,7 +88,7 @@
                                         </a>
                                     </th>
                                     <th scope='col'>
-                                        <a href="{{ route('user.delete') }}">
+                                        <a href="{{ route('user.delete.form') }}">
                                             <button type="button"  class="btn btn-danger rounded-pill " >退会</button>
                                         </a>
                                     </th>

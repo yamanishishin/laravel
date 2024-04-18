@@ -8,6 +8,17 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-body">
+                        <div class='panel-body'>
+                            @if($errors->any())
+                            <div class='alert alert-danger'>
+                                <ul>
+                                    @foreach($errors->all() as $message)
+                                    <li>{{ $message }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+                        </div>
                         <form action="{{ route('user.edit') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <label for='image' class='mt-2'>ユーザーアイコン</label> <br>

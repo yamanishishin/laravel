@@ -12,6 +12,13 @@
                         </div>
                         <div class="card-body">
                             <div class="card-body">
+                                <div class='panel-body'>
+                                @if($errors->any())
+                                    <div class='alert alert-danger'>
+                                        <li>コメント本文は必須入力です。</li>
+                                    </div>
+                                @endif
+                            </div>
                                 <table class='table'>
                                     <thead>
                                         <tr>
@@ -63,7 +70,7 @@
 		                                            <h3 class="form-signin-heading">コメント投稿</h3>
                                                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" />
                                                     <input type="hidden" name="post_id" value="{{ $post->id }}" /> 
-                                                    <input type="text" class="form-control" id= "comment" name="comment" placeholder="本文" required="" autofocus=""/> <br>
+                                                    <input type="text" class="form-control" id= "comment" name="comment" value="{{ old('comment') }}" placeholder="本文"  autofocus=""/> <br>
 			                                        <button type="submit" class="btn btn-lg btn-primary btn-block"  name="submit"  >送信</button> <br><br>
 		                                        </form>	
                                                 <div class ='float-end'>

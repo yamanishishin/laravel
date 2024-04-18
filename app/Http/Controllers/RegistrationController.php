@@ -9,10 +9,10 @@ use App\User;
 use App\Violation;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\CreateDate;
-use Illuminate\Http\CreatePost;
-use Illuminate\Http\CreateComment;
-use Illuminate\Http\CreateViolation;
+use App\Http\Requests\CreateDate;
+use App\Http\Requests\CreatePost;
+use App\Http\Requests\CreateComment;
+use App\Http\Requests\CreateViolation;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -24,66 +24,96 @@ class RegistrationController extends Controller
     }
 
     public function userEditForm(User $user) {
+        if(is_null($user)){
+            abort(404);
+        }
         return view('user_edit',[
             'user' => $user,
         ]);
     }
 
     public function postEditForm(Post $post) {
+        if(is_null($post)){
+            abort(404);
+        }
         return view('post_edit',[
             'post' => $post,
         ]);
     }
 
     public function postViolationForm(Post $post) {
+        if(is_null($post)){
+            abort(404);
+        }
         return view('violation',[
             'post' => $post,
         ]);
     }
 
-  
-
     public function userListForm() {
         $user = new User;
+      
+        $users = User::where('role',0)->with(['post' => function ($query) {
+            $query->where('del_flg', '1');
+        }])->withCount('post')->orderBy('post_count', 'desc')->take(10)->get();
 
-        $users = User::withCount('post')->orderBy('post_count', 'desc')->take(10)->where('role',0)->get();
-        //dd($users);
         return view('user_list',[
             'users' => $users,
         ]);
     }
 
     public function postHiddenForm(post $post){
-        $user = new User;
-        $user_id = $post->user_id;
-        $image = $post->image;
         
-        $users = $user->all()->where('id',$user_id)->toArray();
+        $image = $post->image;
+        $users = User::find($post->user_id);
+
+        if(is_null($post)){
+            abort(404);
+        }
         return view('hidden',[
-            'user' => $users[0],
+            'user' => $users,
             'post' => $post,
             'image' => $image,
         ]);
     }
 
-   
-
-
-
     public function postDeleteForm(Post $post){
+        if(is_null($post)){
+            abort(404);
+        }
         $post->delete();  // 物理削除
         return redirect('my_user');
     }
 
    public function userDeleteForm(User $user){
+        if(is_null($user)){
+             abort(404);
+        }
+        //dd($user);
         return view('user_delete',[
             'user' => $user,
         ]);
    }
 
-   
+   public function userDelete(user $user){
 
-    public function postComment(Post $post,CreatePost $request){
+        $user = User::find(Auth::user()->id);
+        $user->delete();  // 物理削除
+        return redirect('login');
+    }
+
+   public function userStop(user $user) {
+        if(is_null($user)){
+            abort(404);
+        }
+
+        $user->del_flg = 1;
+
+        $user->save();
+        return redirect('/');
+   }
+
+    public function postComment(Post $post,CreateComment $request){
 
         $comment = new Comment;
 
@@ -91,27 +121,22 @@ class RegistrationController extends Controller
         $comment->post_id = $request->post_id;
         $comment->comment = $request->comment;
         //dd($comment);
-
         Auth::user()->comment()->save($comment);
         return redirect('/');
 
     }
 
-    public function postBookmark(Post $post,CreateBookmark $request){
+    public function postBookmark(Post $post,Request $request){
 
         $bookmark = new Bookmark;
 
         $bookmark->user_id = $request->user_id;
         $bookmark->post_id = $request->post_id;
         //dd($bookmark);
-
         Auth::user()->bookmark()->save($bookmark);
         return redirect('/');
 
     }
-
-
-
 
     public function postViolation(Post $post,CreateViolation $request) {
          
@@ -121,8 +146,7 @@ class RegistrationController extends Controller
         $violation->post_id = $request->post_id;
         $violation->title = $request->title;
         $violation->reason = $request->reason;
-        
-
+    
         Auth::user()->violation()->save($violation);
         return redirect('/');
     }
@@ -136,7 +160,6 @@ class RegistrationController extends Controller
         $post->region = $request->region;
         $post->episode = $request->episode;
         //$post->image = $request->image;
-
         // 画像がアップロードされた場合、新しい画像を保存して既存の画像を上書きする
         if ($request->hasFile('image')) {
 
@@ -147,9 +170,7 @@ class RegistrationController extends Controller
         $request->file('image')->storeAs('public/' . $dir, $file_name);
     
         $post->image = $file_name;
-    
     }
-    
         $post->save(); 
         return redirect('/');
     }
@@ -162,7 +183,6 @@ class RegistrationController extends Controller
         $user->comment = $request->comment;
         $user->email = $request->email;
         //$user->image = $request->image;
-
         // 画像がアップロードされた場合、新しい画像を保存して既存の画像を上書きする
         if ($request->hasFile('image')) {
 
@@ -187,30 +207,15 @@ class RegistrationController extends Controller
     
             $user->image = $file_name;
         }
-        
-        $user->save();
-        return redirect('/');
-    }
-
-    public function userDelete(){
-        $user->delete();  // 物理削除
-        return redirect('login');
-    }
-
-    public function userList(Request $request){
-        $user =new user;
-
-        
-        $user->del_flg = 1;
-
-        //dd($user);
-
         $user->save();
         return redirect('/');
     }
 
     public function postHidden(Post $post){
 
+        if(is_null($post)){
+            abort(404);
+        }
         $post->del_flg = 1;
 
         $post->save();

@@ -15,7 +15,7 @@
         <div class="col-md">
             <div class="card">
                 <div class="card-body">
-                    <form autocomplete="off">
+                    <form >
                     @csrf    
                         <div class="container-fluid">
                             <div class="container">

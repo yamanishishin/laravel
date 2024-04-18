@@ -9,7 +9,7 @@ use App\User;
 use App\Violation;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\CreatePost;
+use App\Http\Requests\CreatePost;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -26,8 +26,9 @@ class ResourceController extends Controller
         $kensaku = $request->input('kensaku');
         $from = $request->input('from');
         $until = $request->input('until');
+       
+        if( Auth::user()->role == 0 && Auth::user()->del_flg == 0){
         
-      
         // 日付検索
         if (isset($from) && isset($until)) {
             $posts = $post->whereBetween('updated_at', [$from, $until])->latest()->get();
@@ -53,25 +54,7 @@ class ResourceController extends Controller
         elseif(empty($from) && empty($until) && empty($kensaku)){
             $posts = $post->where('del_flg','0')->latest()->get();
         }
-        
-        if( Auth::user()->role = 1){
-            //dd(Auth::user());
-
-            $posts = $post->where('del_flg','0');
-
-            $posts = Post::withCount('violation')->orderBy('violation_count', 'desc')->take(20)->where('del_flg','0')->get();
-            //dd($posts);
-            return view('master',[
-                'posts' => $posts,
-            ]);
-        }
-
-        elseif( Auth::user()->del_flg = 1){
-            return view ('stop');
-        }
-        
-        
-        
+       
         //dd($posts);
         return view('main',[
             'posts' => $posts,
@@ -80,6 +63,20 @@ class ResourceController extends Controller
             'kensaku' => $kensaku,
         ]);
         
+        }
+
+        if( Auth::user()->role == 1){
+
+            $posts = $post->where('del_flg','0');
+
+            $posts = Post::withCount('violation')->orderBy('violation_count', 'desc')->take(20)->where('del_flg','0')->get();
+            return view('master',[
+                'posts' => $posts,
+            ]);
+        }
+        if(Auth::user()->del_flg == 1){
+            return view('stop');
+        }
     }
 
     /**

@@ -15,9 +15,7 @@ use Illuminate\Support\Facades\Auth;
 class DisplayController extends Controller
 {
     public function index(Request $request){
-       
-        $post = new Post;
-        $posts = $post->all()->where('del_flg','0')->toArray();
+        $posts = post::where('del_flg','0')->get();
 
         return view('main',[
             'posts' => $posts,
@@ -26,9 +24,7 @@ class DisplayController extends Controller
 
     public function mainForm(){
 
-        
-        $post = new Post;
-        $posts = $post->all()->where('del_flg','0')->toArray();
+        $posts = post::where('del_flg','0')->get();
 
         return view('main',[
             'posts' => $posts,
@@ -37,32 +33,44 @@ class DisplayController extends Controller
 
     public function postDetail(Post $post){
 
-        $id = $post->id;
-        $user_id = $post->user_id;
+        //$id = $post->id;
+        //$user_id = $post->user_id;
         $image = $post->image;
 
-        $comment = new Comment;
-        $comments = $comment->all()->where('post_id', $id)->toArray();
+        //$comment = new Comment;
+        //$comments = $comment->all()->where('post_id', $id)->toArray();
 
-        $user = new User;
-        $users = $user->all()->where('id',$user_id)->toArray();
-        //dd($post);
+        //$user = new User;
+        //$users = $user->all()->where('id',$user_id)->toArray();
+
+        // 投稿に関連するコメントを取得
+        $comments = Comment::where('post_id', $post->id)->get();
+        // 投稿に関連するユーザーを取得
+        $user = User::find($post->user_id);
+
+        //dd($user);
+
+        if(is_null($post)){
+            abort(404);
+        }
 
         return view('detail',[
             'post' => $post,
             'comments' => $comments,
-            'user' => $users[0],
+            'user' => $user,
             'image' => $image,
         ]);
         
     }
 
-    
-
     public function myUser(User $user){
 
         $post = new Post;
         $posts = Auth::user()->post()->where('del_flg','0')->get();
+
+        if(is_null($user)){
+            abort(404);
+        }
         return view('my_user',[
             'user' => $user,
             'posts' => $posts
@@ -73,6 +81,10 @@ class DisplayController extends Controller
 
         $post = new Post;
         $posts = $user->post()->where('del_flg','0')->get();
+
+        if(is_null($user)){
+            abort(404);
+        }
         return view('other_user',[
             'user' => $user,
             'posts' => $posts

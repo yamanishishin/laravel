@@ -62,12 +62,9 @@
                                         <th scope='col'>{{ $user['name'] }}</th>
                                         <th scope='col'>{{ $user['comment'] }}
                                         <div class ='float-end'>
-                                            <form action="{{ route('user.list') }}" method="post">
-                                            @csrf
-                                            <input type="hidden"  name="del_flg" value="1" >
-                                            <input type="hidden"  name="id" value="$user['id']" >
-                                                <button type='submit' class='btn btn-primary mt-2 rounded-pill '>利用停止</button>
-                                            </form>
+                                            <a href="{{ route('user.stop', ['user' => $user['id']]) }}">
+                                                <button type='button' class='btn btn-primary mt-2 rounded-pill '>利用停止</button>
+                                            </a>
                                         </div>
                                         </th>
                                     </tr>        

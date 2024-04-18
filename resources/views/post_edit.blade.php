@@ -8,6 +8,17 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-body">
+                        <div class='panel-body'>
+                            @if($errors->any())
+                            <div class='alert alert-danger'>
+                                <ul>
+                                    @foreach($errors->all() as $message)
+                                    <li>{{ $message }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+                        </div>
                         <form action="{{ route('post.edit', ['post' => $post['id']]) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" />

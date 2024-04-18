@@ -18,52 +18,44 @@ Auth::routes();
 
 Route::get('main',[DisplayController::class, 'mainForm'])->name('main');
 
-//Route::get('/pw_reset',[RegistrationController::class, 'pwresetForm'])->name('pw.reset');
-//Route::get('/pw_form',[RegistrationController::class, 'pwForm'])->name('pw.form');
-//Route::post('/pw_form',[RegistrationController::class, 'pwForm']);
-
-
 Route::group(['middleware' => 'auth'], function() {
    
     Route::get('/', [DisplayController::class,'index']);
     Route::resource('/', 'ResourceController');
+
+    Route::get('/new_post',[RegistrationController::class, 'newPostForm'])->name('new.post');
+    Route::get('/post/{post}/detail', [DisplayController::class, 'postDetail'])->name('post.detail');
     
+    Route::get('/my_user',[DisplayController::class, 'myUser'])->name('my.user');
+    Route::get('/my_bookmark',[DisplayController::class, 'myBookmark'])->name('my.bookmark');
     
+    Route::get('/user/{user}/other_user',[DisplayController::class, 'otherUser'])->name('other.user');
 
+    Route::get('/user_edit',[RegistrationController::class, 'userEditForm'])->name('user.edit');
+    Route::post('/user_edit',[RegistrationController::class, 'userEdit']);
+    Route::get('/user_delete_form',[RegistrationController::class, 'userDeleteForm'])->name('user.delete.form');
+    Route::get('/user_delete',[RegistrationController::class, 'userDelete'])->name('user.delete');
 
-Route::get('/post/{post}/detail', [DisplayController::class, 'postDetail'])->name('post.detail');
+    Route::get('/user_list',[RegistrationController::class, 'userListForm'])->name('user.list');
+    Route::get('/user/{user}/stop',[RegistrationController::class, 'userStop'])->name('user.stop');
 
-Route::get('/my_user',[DisplayController::class, 'myUser'])->name('my.user');
-Route::get('/my_bookmark',[DisplayController::class, 'myBookmark'])->name('my.bookmark');
+    Route::get('/post/{post}/comment',[RegistrationController::class, 'postCommnetForm'])->name('post.comment');
+    Route::post('/post/{post}/comment',[RegistrationController::class, 'postComment']);
+    Route::get('/post/{post}/bookmark',[RegistrationController::class, 'postBookmarkForm'])->name('post.bookmark');
+    Route::post('/post/{post}/bookmark',[RegistrationController::class, 'postBookmark']);
+    Route::get('/post/{post}/violation',[RegistrationController::class, 'postViolationForm'])->name('post.violation');
+    Route::post('/post/{post}/violation',[RegistrationController::class, 'postViolation']);
+    Route::get('/post/{post}/hidden',[RegistrationController::class, 'postHiddenForm'])->name('post.hidden');
+    Route::post('post/{post}/hidden',[RegistrationController::class, 'postHidden']);
 
-Route::get('/new_post',[RegistrationController::class, 'newPostForm'])->name('new.post');
-//Route::post('/new_post',[RegistrationController::class, 'newPost']);
+Route::group(['middleware' => 'can:view,post'], function(){
 
-Route::get('/user/{user}/other_user',[DisplayController::class, 'otherUser'])->name('other.user');
-//Route::post('/user/{user}/other_user',[DisplayControllerr::class, 'otherUser']);
-
-
-Route::get('/post/{post}/comment',[RegistrationController::class, 'postCommnetForm'])->name('post.comment');
-Route::post('/post/{post}/comment',[RegistrationController::class, 'postComment']);
-Route::get('/post/{post}/bookmark',[RegistrationController::class, 'postBookmarkForm'])->name('post.bookmark');
-Route::post('/post/{post}/bookmark',[RegistrationController::class, 'postBookmark']);
-Route::get('/post/{post}/violation',[RegistrationController::class, 'postViolationForm'])->name('post.violation');
-Route::post('/post/{post}/violation',[RegistrationController::class, 'postViolation']);
-Route::get('/post/{post}/edit',[RegistrationController::class, 'postEditForm'])->name('post.edit');
-Route::post('post/{post}/edit',[RegistrationController::class, 'postEdit']);
-Route::get('post/{post}/delete',[RegistrationController::class, 'postDeleteForm'])->name('post.delete');
-
-
-Route::get('/user_edit',[RegistrationController::class, 'userEditForm'])->name('user.edit');
-Route::post('/user_edit',[RegistrationController::class, 'userEdit']);
-Route::get('/user_delete',[RegistrationController::class, 'userDeleteForm'])->name('user.delete');
-Route::post('/user_delete',[RegistrationController::class, 'userDelete']);
-
-Route::get('/user_list',[RegistrationController::class, 'userListForm'])->name('user.list');
-Route::post('/user_list',[RegistrationController::class, 'userList']);
-Route::get('/post/{post}/hidden',[RegistrationController::class, 'postHiddenForm'])->name('post.hidden');
-Route::post('post/{post}/hidden',[RegistrationController::class, 'postHidden']);
+    Route::get('/post/{post}/edit',[RegistrationController::class, 'postEditForm'])->name('post.edit');
+    Route::post('post/{post}/edit',[RegistrationController::class, 'postEdit']);
+    Route::get('post/{post}/delete',[RegistrationController::class, 'postDeleteForm'])->name('post.delete');
+    
 });
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+});
+
+

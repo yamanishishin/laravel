@@ -21,7 +21,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th scope='col'><img src="{{asset('storage/img/'.Auth::user()->image)}}" class="h-1 img-fluid" width="80" height="80"></th>
+                                    <th scope='col'><img src="{{asset('storage/img/'.$user->image)}}" class="h-1 img-fluid" width="80" height="80"></th>
                                     <th scope='col'>{{ $user['name'] }}</th>
                                     <th scope='col'>{{ $user['comment'] }}</th>
                                 </tr>  

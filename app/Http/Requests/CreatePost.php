@@ -27,7 +27,7 @@ class CreatePost extends FormRequest
             'title' => 'required|string|max:30',
             'region' => 'required|string|max:100',
             'episode' => 'required|string|max:300',
-            'image' => 'string|max:300',
+            'image' => 'max:300',
         ];
     }
 }

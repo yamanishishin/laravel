@@ -25,9 +25,9 @@ class CreateDate extends FormRequest
     {
         return [
             'name' => 'required|string|max:10',
-            'comment' => 'required|string|max:300',
+            'comment' => 'string|max:300',
             'email' => 'required|string|max:30',
-            'image' => 'string|max:300',
+            'image' => 'max:300',
         ];
     }
 }
