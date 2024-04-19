@@ -33,22 +33,12 @@ class DisplayController extends Controller
 
     public function postDetail(Post $post){
 
-        //$id = $post->id;
-        //$user_id = $post->user_id;
-        $image = $post->image;
-
-        //$comment = new Comment;
-        //$comments = $comment->all()->where('post_id', $id)->toArray();
-
-        //$user = new User;
-        //$users = $user->all()->where('id',$user_id)->toArray();
-
         // 投稿に関連するコメントを取得
-        $comments = Comment::where('post_id', $post->id)->get();
+        $comments = Comment::with('user')->where('post_id', $post->id)->get();
         // 投稿に関連するユーザーを取得
         $user = User::find($post->user_id);
 
-        //dd($user);
+       //dd($comments);
 
         if(is_null($post)){
             abort(404);
@@ -58,7 +48,7 @@ class DisplayController extends Controller
             'post' => $post,
             'comments' => $comments,
             'user' => $user,
-            'image' => $image,
+            
         ]);
         
     }

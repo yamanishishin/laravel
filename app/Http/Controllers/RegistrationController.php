@@ -55,7 +55,14 @@ class RegistrationController extends Controller
       
         $users = User::where('role',0)->with(['post' => function ($query) {
             $query->where('del_flg', '1');
-        }])->withCount('post')->orderBy('post_count', 'desc')->take(10)->get();
+        }])
+        ->withCount(['post' => function ($query) {
+            $query->where('del_flg', '1');
+        }])
+        ->orderBy('post_count', 'desc')->take(10)->get();
+
+        
+        //dd($users);
 
         return view('user_list',[
             'users' => $users,

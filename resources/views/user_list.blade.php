@@ -51,6 +51,7 @@
                             <thead>
                                 <tr>
                                     <th scope='col' style="background-color:ghostwhite">ユーザーアイコン</th>
+                                    <th scope='col' style="background-color:ghostwhite">表示停止件数</th>
                                     <th scope='col' style="background-color:ghostwhite">ユーザー名</th>
                                     <th scope='col' style="background-color:ghostwhite">ユーザーコメント</th>
                                 </tr>
@@ -59,6 +60,7 @@
                                 @foreach($users as $user)
                                 <tr>
                                         <th scope='col'> <img src="{{asset('storage/img/'.$user['image'])}}" class="h-1 img-fluid" width="80" height="80"></th>
+                                        <th scope='col'>{{ $user['post_count'] }}</th>
                                         <th scope='col'>{{ $user['name'] }}</th>
                                         <th scope='col'>{{ $user['comment'] }}
                                         <div class ='float-end'>

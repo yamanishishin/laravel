@@ -70,7 +70,7 @@
 		                                            <h3 class="form-signin-heading">コメント投稿</h3>
                                                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" />
                                                     <input type="hidden" name="post_id" value="{{ $post->id }}" /> 
-                                                    <input type="text" class="form-control" id= "comment" name="comment" value="{{ old('comment') }}" placeholder="本文"  autofocus=""/> <br>
+                                                    <input type="text" class="form-control" id= "comment" name="comment" value="{{ old('comment') }}" placeholder="本文"  required="" autofocus=""/> <br>
 			                                        <button type="submit" class="btn btn-lg btn-primary btn-block"  name="submit"  >送信</button> <br><br>
 		                                        </form>	
                                                 <div class ='float-end'>
@@ -96,12 +96,16 @@
                                     <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope='col' style="background-color:ghostwhite">コメント一覧</th>
+                                            <th scope='col' style="background-color:ghostwhite">ユーザー名</th>
+                                            <th scope='col' style="background-color:ghostwhite">日付</th>
+                                            <th scope='col' style="background-color:ghostwhite">コメント本文</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     @foreach($comments as $comment)
                                         <tr>
+                                            <th scope='col'>{{ $comment->user->name }}</th>
+                                            <th scope='col'>{{ $comment['created_at'] }}</th>
                                             <th scope='col'>{{ $comment['comment'] }}</th>
                                         </tr>  
                                     </tbody>

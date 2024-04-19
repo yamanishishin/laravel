@@ -53,6 +53,7 @@ class ResourceController extends Controller
         }
         elseif(empty($from) && empty($until) && empty($kensaku)){
             $posts = $post->where('del_flg','0')->latest()->get();
+            //dd($posts);
         }
        
         //dd($posts);

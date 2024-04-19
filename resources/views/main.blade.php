@@ -49,6 +49,7 @@
                         <table class='table'>
                             <thead>
                                 <tr>
+                                   
                                     <th scope='col' style="background-color:ghostwhite">タイトル</th>
                                     <th scope='col' style="background-color:ghostwhite">カントリー</th>
                                     <th scope='col' style="background-color:ghostwhite">エピソード</th>
@@ -57,16 +58,17 @@
                             <tbody>
                                 @foreach($posts as $post)
                                 <tr>
-                                        <th scope='col'>{{ $post['title'] }}</th>
-                                        <th scope='col'>{{ $post['region'] }}</th>
-                                        <th scope='col'>{{ $post['episode'] }}
-                                        <div class ='float-end'>
-                                            <a href="{{ route('post.detail', ['post' => $post['id']]) }}">
+                                    
+                                    <th scope='col'>{{ $post['title'] }}</th>
+                                    <th scope='col'>{{ $post['region'] }}</th>
+                                    <th scope='col'>{{ $post['episode'] }}
+                                    <div class ='float-end'>
+                                        <a href="{{ route('post.detail', ['post' => $post['id']]) }}">
                                             <button type='button' class='btn btn-primary mt-2 rounded-pill '>詳細</button>
-                                            </a>
-                                        </div>
-                                        </th>
-                                    </tr>        
+                                        </a>
+                                    </div>
+                                    </th>
+                                </tr>        
                                    
                                     @endforeach    
                                     </tbody>
