@@ -41,13 +41,19 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::get('/post/{post}/comment',[RegistrationController::class, 'postCommnetForm'])->name('post.comment');
     Route::post('/post/{post}/comment',[RegistrationController::class, 'postComment']);
-    Route::get('/post/{post}/bookmark',[RegistrationController::class, 'postBookmarkForm'])->name('post.bookmark');
-    Route::post('/post/{post}/bookmark',[RegistrationController::class, 'postBookmark']);
+    //Route::get('/post/{post}/bookmark',[RegistrationController::class, 'postBookmarkForm'])->name('post.bookmark');
+    //Route::post('/post/{post}/bookmark',[RegistrationController::class, 'postBookmark']);
     Route::get('/post/{post}/violation',[RegistrationController::class, 'postViolationForm'])->name('post.violation');
     Route::post('/post/{post}/violation',[RegistrationController::class, 'postViolation']);
     Route::get('/post/{post}/hidden',[RegistrationController::class, 'postHiddenForm'])->name('post.hidden');
     Route::post('post/{post}/hidden',[RegistrationController::class, 'postHidden']);
 
+    Route::post('/bookmark/{post_id}',[LikeController::class,'store']);
+    Route::post('/unbookmark/{post_id}',[LikeController::class,'destroy']);
+
+    Route::post('ajaxbookmark', 'LikeController@ajaxbookmark')->name('posts.ajaxbookmark');
+
+   
 Route::group(['middleware' => 'can:view,post'], function(){
 
     Route::get('/post/{post}/edit',[RegistrationController::class, 'postEditForm'])->name('post.edit');

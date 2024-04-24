@@ -90,6 +90,9 @@
     scroll-behavior: smooth;
   }
 }
+.loved{
+  color: red ;
+}
 
 body {
   margin: 0;

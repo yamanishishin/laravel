@@ -55,12 +55,24 @@
                                                 <a href="{{ url('/') }}">
                                                     <button type="button"  class="btn btn-dark rounded-pill " >投稿リストへ</button>
                                                  </a> <br> <br> <br> <br>
+                                            
+                                        @if($post['del_flg'] == 0)
+                                            <th scope='col'>
                                                 <form action="{{ route('post.hidden', ['post' => $post['id']]) }}" method="POST" name="hidden"  >
-                                                    @csrf  
+                                                @csrf  
                                                     <input type="hidden" name="del_flg" value="1" /> 
                                                     <button type='submit' class='btn btn-success mt-2 rounded-pill' name="submit">非表示にする</button>
                                                 </form>
                                             </th>
+                                        @else
+                                            <th scope='col'>
+                                                <form action="{{ route('post.hidden', ['post' => $post['id']]) }}" method="POST" name="hidden"  >
+                                                @csrf  
+                                                    <input type="hidden" name="del_flg" value="0" /> 
+                                                    <button type='submit' class='btn btn-warning mt-2 rounded-pill' name="submit">表示にする</button>
+                                                </form>
+                                            </th>
+                                        @endif  
                                         </tr>  
                                     </tbody>
                                     </table>

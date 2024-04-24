@@ -1,5 +1,6 @@
 @extends('layouts.header')
 @section('header')
+<link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
         <div class="border" >
             <br><h1 style='text-align:center '>Overseas </h1><br>
         </div>
@@ -50,10 +51,23 @@
                                         <tr>
                                             <th scope='col'>{{ $post['episode'] }}</th>
                                             <th scope='col'>{{ $post['region'] }}
-                                           
-                                           
+                                                <div class ='float-end'>
+                                                @if($bookmark_model->bookmark_exist(Auth::user()->id,$post->id))
+                                                <p class="favorite-marke" >
+                                                    <a class="js-bookmark-toggle loved"   href="" data-postid="{{ $post->id }}"><i class="fas fa-heart"  ></i></a>
+                                                    <span class="bookmarksCount" >{{$post->bookmarks_count}}</span>
+                                                </p>
+                                                @else
+                                                <p class="favorite-marke">
+                                                    <a class="js-bookmark-toggle" href="" data-postid="{{ $post->id }}"><i class="fas fa-heart" ></i></a>
+                                                    <span class="bookmarksCount">{{$post->bookmarks_count}}</span>
+                                                </p>
+                                                @endif
+                                                </div>
                                             </th>
                                         </tr>  
+
+
                                     </tbody>
                                     </table>
                                 </div>
@@ -70,21 +84,13 @@
 		                                            <h3 class="form-signin-heading">コメント投稿</h3>
                                                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" />
                                                     <input type="hidden" name="post_id" value="{{ $post->id }}" /> 
-                                                    <input type="text" class="form-control" id= "comment" name="comment" value="{{ old('comment') }}" placeholder="本文"  required="" autofocus=""/> <br>
+                                                    <input type="text" class="form-control" id= "comment" name="comment" value="{{ old('comment') }}" placeholder="本文"  autofocus=""/> <br>
 			                                        <button type="submit" class="btn btn-lg btn-primary btn-block"  name="submit"  >送信</button> <br><br>
 		                                        </form>	
                                                 <div class ='float-end'>
                                                 <a href="{{ route('post.violation', ['post' => $post['id']]) }}">
                                                     <button type='button' class='btn btn-danger mt-2 rounded-pill '>違反報告</button>
                                                 </a>
-                                            </div>
-                                            <div class ='float-end'>
-                                                <form action="{{ route('post.bookmark', ['post' => $post['id']]) }}" method="POST" name="bookmark"  >
-                                                @csrf  
-                                                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" />
-                                                    <input type="hidden" name="post_id" value="{{ $post->id }}" /> 
-                                                    <button type='submit' class='btn btn-success mt-2 rounded-pill' name="submit">いいね</button>
-                                                </form>
                                             </div>
                                             </th>
                                             
@@ -122,3 +128,46 @@
     </body>
 </html>
 @endsection
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+    $(function () {
+    var bookmark = $('.js-bookmark-toggle');
+    var bookmarkPostId;
+    
+    bookmark.on('click', function () {
+        var $this = $(this);
+        bookmarkPostId = $this.data('postid');
+        $.ajax({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+                url: '/ajaxbookmark',  //routeの記述
+                type: 'POST', //受け取り方法の記述（GETもある）
+                data: {
+                    'post_id': bookmarkPostId //コントローラーに渡すパラメーター
+                },
+        })
+    
+            // Ajaxリクエストが成功した場合
+            .done(function (data) {
+    //lovedクラスを追加
+                $this.toggleClass('loved'); 
+    
+    //.likesCountの次の要素のhtmlを「data.postLikesCount」の値に書き換える
+                $this.next('.bookmarksCount').html(data.postBookmarksCount); 
+    
+            })
+            // Ajaxリクエストが失敗した場合
+            .fail(function (data, xhr, err) {
+    //ここの処理はエラーが出た時にエラー内容をわかるようにしておく。
+    //とりあえず下記のように記述しておけばエラー内容が詳しくわかります。笑
+                console.log('エラー');
+                console.log(err);
+                console.log(xhr);
+            });
+        
+        return false;
+    });
+    });
+</script>

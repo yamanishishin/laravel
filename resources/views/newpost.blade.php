@@ -23,11 +23,11 @@
                             @csrf
                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" />
                             <label for='title'>タイトル</label>
-                                <input type='text' class='form-control' name='title' value="{{ old('title') }}" required=""/>
+                                <input type='text' class='form-control' name='title' value="{{ old('title') }}" />
                             <label for='region' class='mt-2'>地域カントリー</label>
-                                <input type='text' class='form-control' name='region'  value="{{ old('region') }}" required=""/>
+                                <input type='text' class='form-control' name='region'  value="{{ old('region') }}" />
                             <label for='episode' class='mt-2'>エピソード</label>
-                                <textarea class='form-control' name='episode' required=""></textarea>
+                                <textarea class='form-control' name='episode' ></textarea>
                         
                             <label for='image' class='mt-2'>画像ファイル</label>
                                 <input type="file" name="image" accept="image/*">

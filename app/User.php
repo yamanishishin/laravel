@@ -39,15 +39,21 @@ class User extends Authenticatable
 
 
     public function post(){
-        return $this->hasMany('App\post');
+        return $this->hasMany('App\Post');
+    }
+    public function bookmarks(){
+        return $this->hasMany('App\Bookmark');
     }
     public function comment(){
         return $this->hasMany('App\Comment');
     }
-    public function bookmark(){
-        return $this->hasMany('App\bookmark');
-    }
+    //public function bookmark(){return $this->hasMany('App\bookmark');}
     public function violation(){
-        return $this->hasMany('App\violation');
+        return $this->hasMany('App\Violation');
     }
+
+
+
+   
+
 }

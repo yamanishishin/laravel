@@ -38,6 +38,7 @@ class DisplayController extends Controller
         // 投稿に関連するユーザーを取得
         $user = User::find($post->user_id);
 
+        $bookmark_model = new Bookmark;
        //dd($comments);
 
         if(is_null($post)){
@@ -48,7 +49,7 @@ class DisplayController extends Controller
             'post' => $post,
             'comments' => $comments,
             'user' => $user,
-            
+            'bookmark_model' => $bookmark_model,
         ]);
         
     }

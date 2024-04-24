@@ -23,7 +23,7 @@
 			        <hr class="colorgraph"><br>
                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" />
                     <input type="hidden" name="post_id" value="{{ $post['id']}}" />
-                    <input type="text" class="form-control" id= "title" name="title" value="{{ old('title') }}" placeholder="タイトル" required=""  autofocus="" /> <br>
+                    <input type="text" class="form-control" id= "title" name="title" value="{{ old('title') }}" placeholder="タイトル"  autofocus="" /> <br>
 			        <input type="text" class="form-control" id= "reason" name="reason"  value="{{ old('reason') }}" placeholder="理由"/> <br>
 			        <button type="submit" class="btn btn-lg btn-primary btn-block"  name="submit"  >違反報告</button> <br><br>
                     

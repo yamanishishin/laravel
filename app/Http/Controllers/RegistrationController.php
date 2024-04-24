@@ -113,11 +113,15 @@ class RegistrationController extends Controller
         if(is_null($user)){
             abort(404);
         }
-
-        $user->del_flg = 1;
+        if($user->del_flg == 0){
+            $user->del_flg = 1;
+        }
+        elseif($user->del_flg == 1){
+            $user->del_flg = 0;
+        }
 
         $user->save();
-        return redirect('/');
+        return redirect('user_list');
    }
 
     public function postComment(Post $post,CreateComment $request){
@@ -129,7 +133,7 @@ class RegistrationController extends Controller
         $comment->comment = $request->comment;
         //dd($comment);
         Auth::user()->comment()->save($comment);
-        return redirect('/');
+        return redirect()->route('post.detail',['post' => $post['id']]);
 
     }
 
@@ -141,7 +145,7 @@ class RegistrationController extends Controller
         $bookmark->post_id = $request->post_id;
         //dd($bookmark);
         Auth::user()->bookmark()->save($bookmark);
-        return redirect('/');
+        return redirect()->route('post.detail',['post' => $post['id']]);
 
     }
 
@@ -179,7 +183,7 @@ class RegistrationController extends Controller
         $post->image = $file_name;
     }
         $post->save(); 
-        return redirect('/');
+        return redirect()->route('post.detail',['post' => $post['id']]);
     }
 
     public function userEdit(CreateDate $request) {
@@ -215,7 +219,7 @@ class RegistrationController extends Controller
             $user->image = $file_name;
         }
         $user->save();
-        return redirect('/');
+        return redirect('my_user');
     }
 
     public function postHidden(Post $post){
@@ -223,10 +227,18 @@ class RegistrationController extends Controller
         if(is_null($post)){
             abort(404);
         }
-        $post->del_flg = 1;
+        if($post->del_flg == 0){
+            $post->del_flg = 1;
+        }
+        elseif($post->del_flg == 1){
+            $post->del_flg = 0;
+        }
+        
 
         $post->save();
         return redirect('/');
     }
+
+   
 
 }

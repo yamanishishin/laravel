@@ -54,6 +54,7 @@
                                     <th scope='col' style="background-color:ghostwhite">タイトル</th>
                                     <th scope='col' style="background-color:ghostwhite">カントリー</th>
                                     <th scope='col' style="background-color:ghostwhite">エピソード</th>
+                                    <th scope='col' style="background-color:ghostwhite">表示切替</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -69,6 +70,24 @@
                                         </a>
                                      </div>
                                     </th>
+                                    @if($post['del_flg'] == 0)
+                                    <th scope='col'>
+                                        <form action="{{ route('post.hidden', ['post' => $post['id']]) }}" method="POST" name="hidden"  >
+                                        @csrf  
+                                            <input type="hidden" name="del_flg" value="1" /> 
+                                            <button type='submit' class='btn btn-success mt-2 rounded-pill' name="submit">非表示にする</button>
+                                        </form>
+                                    </th>
+                                    @else
+                                    <th scope='col'>
+                                        <form action="{{ route('post.hidden', ['post' => $post['id']]) }}" method="POST" name="hidden"  >
+                                        @csrf  
+                                            <input type="hidden" name="del_flg" value="0" /> 
+                                            <button type='submit' class='btn btn-warning mt-2 rounded-pill' name="submit">表示にする</button>
+                                        </form>
+                                    </th>
+                                    @endif
+                                    
                                 </tr>        
                                 @endforeach    
                             </tbody>

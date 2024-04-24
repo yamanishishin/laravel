@@ -54,6 +54,7 @@
                                     <th scope='col' style="background-color:ghostwhite">表示停止件数</th>
                                     <th scope='col' style="background-color:ghostwhite">ユーザー名</th>
                                     <th scope='col' style="background-color:ghostwhite">ユーザーコメント</th>
+                                    <th scope='col' style="background-color:ghostwhite">利用切替</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -62,22 +63,28 @@
                                         <th scope='col'> <img src="{{asset('storage/img/'.$user['image'])}}" class="h-1 img-fluid" width="80" height="80"></th>
                                         <th scope='col'>{{ $user['post_count'] }}</th>
                                         <th scope='col'>{{ $user['name'] }}</th>
-                                        <th scope='col'>{{ $user['comment'] }}
-                                        <div class ='float-end'>
+                                        <th scope='col'>{{ $user['comment'] }}</th>
+                                    @if($user['del_flg'] == 0)
+                                        <th scope='col'>
                                             <a href="{{ route('user.stop', ['user' => $user['id']]) }}">
-                                                <button type='button' class='btn btn-primary mt-2 rounded-pill '>利用停止</button>
+                                                <button type='button' class='btn btn-success mt-2 rounded-pill '>利用停止</button>
                                             </a>
-                                        </div>
                                         </th>
-                                    </tr>        
-                                   
+                                    @else
+                                        <th scope='col'>
+                                            <a href="{{ route('user.stop', ['user' => $user['id']]) }}">
+                                                <button type='button' class='btn btn-warning mt-2 rounded-pill '>利用停止解除</button>
+                                            </a>
+                                        </th>
+                                    @endif  
+                                </tr>        
                                     @endforeach    
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
+        </div>
     </main>
     </body>
 </html>

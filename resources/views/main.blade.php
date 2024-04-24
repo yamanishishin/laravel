@@ -11,6 +11,7 @@
 </div>
 
 <main class="py-4 "> 
+@if(Auth::check())
     <div class="row justify-content-center ">
         <div class="col-md">
             <div class="card">
@@ -37,6 +38,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     <div class="row justify-content-center mt-4">
         <div class="col-md">
@@ -53,6 +55,7 @@
                                     <th scope='col' style="background-color:ghostwhite">タイトル</th>
                                     <th scope='col' style="background-color:ghostwhite">カントリー</th>
                                     <th scope='col' style="background-color:ghostwhite">エピソード</th>
+                                    <th scope='col' style="background-color:ghostwhite">投稿日時</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,7 +64,8 @@
                                     
                                     <th scope='col'>{{ $post['title'] }}</th>
                                     <th scope='col'>{{ $post['region'] }}</th>
-                                    <th scope='col'>{{ $post['episode'] }}
+                                    <th scope='col'>{{ $post['episode'] }}</th>
+                                    <th scope='col'>{{ $post['updated_at'] }}
                                     <div class ='float-end'>
                                         <a href="{{ route('post.detail', ['post' => $post['id']]) }}">
                                             <button type='button' class='btn btn-primary mt-2 rounded-pill '>詳細</button>
